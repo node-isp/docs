@@ -1,0 +1,111 @@
+---
+title: Self Hosted
+---
+
+import {Aside} from '@astrojs/starlight/components';
+
+NodeISP can be self-hosted on your own infrastructure.
+
+## Minimum Hardware Requirements
+
+- 4 CPU Cores
+- 8 GB RAM
+- 100 GB Disk Space
+
+## Software Requirements
+
+- Debian 11 or 12
+- Ubuntu 22.04 or 24.04
+- Docker
+- Docker Compose Plugin
+
+### Docker Installation
+
+#### Debian
+
+```bash
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install -y git software-properties-common curl apt-transport-https ca-certificates
+
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+#### Ubuntu
+
+```bash
+apt update && apt upgrade -y
+
+sudo apt install -y git software-properties-common curl apt-transport-https ca-certificates
+
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+## Installation Steps
+
+1. Clone the NodeISP Deployment Repository
+2. Run the Configuration Script
+3. Login to the Docker Registry
+4. Start the NodeISP Services
+
+### Clone the NodeISP Deployment Repository
+
+```bash
+cd /opt/
+git clone https://github.com/The-IT-Dept/node-isp-deploy.git nodeisp
+```
+
+### Run the Configuration Script.
+
+This script will prompt you for the necessary configuration options, and then generate the .env file for you.
+
+```bash
+cd /opt/nodeisp
+./setup.sh
+```
+
+### Login to the Docker Registry
+
+
+```console
+docker login cr.theitdept.au
+```
+
+<Aside type="tip">
+    Your username is your licence key, and your password is your licence code, prefixed with a `P`, eg `Pnodeisp_1234`
+</Aside>
+
+### Start the NodeISP Services
+
+On the first boot, NodeISP will download all the necessary Docker images, which may take some time. The database will be
+initialised, and the services will be started. Now is a good time to grab a coffee.
+
+```bash
+docker compose up -d
+```
+
+## Basic Configuration
+
+NodeISP is now running, you will now need to complete the initial configuration. Open your web browser and navigate to
+`https://your-domain.comm.au/admin/` to access the NodeISP web interface.
