@@ -6,8 +6,8 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-    site: "https://node.net.au",
-    base: "/docs",
+    site: "https://docs.node.net.au",
+    base: "",
     image: {
         service: squooshImageService()
     },
@@ -19,7 +19,7 @@ export default defineConfig({
         },
         customCss: ['./src/tailwind.css'],
         social: {
-            github: 'https://github.com/the-it-dept'
+            github: 'https://github.com/node-isp'
         },
         sidebar: [{
             label: 'Welcome to NodeISP',
@@ -41,8 +41,5 @@ export default defineConfig({
     }), tailwind({
         applyBaseStyles: false
     })],
-    output: "server",
-    adapter: node({
-        mode: "standalone"
-    })
+    output: "static",
 });
